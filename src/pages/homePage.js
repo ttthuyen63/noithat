@@ -16,11 +16,12 @@ import sidebar_menu from "../constants/sidebar-menu";
 import Chart from "react-apexcharts";
 import { currencyFormat } from "../ultils/constant";
 import StatusBill from "../components/StatusBill";
+import { addListproduct } from "../redux/productSlice";
 
 export default function HomePage() {
   // const [first, setfirst] = useState(second);
   const [moneyState, setmoneyState] = useState(null);
-  const [productStateLength, setproductStateLength] = useState(null);
+  const [productState, setproductState] = useState(null);
   const [borrowStateLength, setborrowStateLength] = useState(null);
   const [isActiveProduct, setisActiveProduct] = useState(false);
   const [isActiveOrder, setisActiveOrder] = useState(false);
@@ -33,11 +34,24 @@ export default function HomePage() {
   }, []);
   const getorderApi = async () => {
     try {
-      const response = await customAxios.get("/Product/GetBill/getAllBill.php");
+      const response = await customAxios.get("/NoiThat/GetBill/getAllBill.php");
       setorderState(response?.data?.result);
       console.log("orderState", orderState);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getproductApi();
+  }, []);
+  const getproductApi = async () => {
+    try {
+      const res = await customAxios.get("/NoiThat/GetProductList/read.php");
+      dispatch(addListproduct(res?.data));
+      setproductState(res?.data?.data);
+    } catch (error) {
+      console.log("Lỗi", error);
     }
   };
 
@@ -51,50 +65,8 @@ export default function HomePage() {
   //   }
   // };
 
-  const doanhthu = moneyState?.map((item) => {
-    return item?.money;
-  });
-  console.log("doanhthu", doanhthu);
-  const calculateSum = () => {
-    let sum = 0;
-    doanhthu?.forEach((number) => {
-      sum += number;
-    });
-    return sum;
-  };
-  console.log("Tổng", calculateSum(doanhthu));
-
-  const [state, setState] = useState({
-    options: {
-      colors: ["#E91E63", "#FF9800"],
-      chart: {
-        id: "basic-bar",
-      },
-      xaxis: {
-        categories: [
-          "Tháng 2",
-          "Tháng 3",
-          "Tháng 4",
-          "Tháng 5",
-          "Tháng 6",
-          "Tháng 7",
-        ],
-      },
-    },
-    series: [
-      {
-        name: "Doanh thu",
-        data: doanhthu,
-        // data: [30, 40, 45, 50, 49],
-      },
-      // {
-      //   name: "People Died",
-      //   data: [3, 60, 35, 80, 49, 70, 20, 81],
-      // },
-    ],
-  });
-
   const latestOrders = orderState?.slice(-5);
+  const latestProduct = productState?.slice(-5);
   console.log("lastest...", latestOrders);
   return (
     <div className="row">
@@ -127,25 +99,10 @@ export default function HomePage() {
           </div>
           <h1 className="" style={{ textAlign: "center" }}>
             Thống kê
+            {/* Thay bằng tên muốn đặt */}
           </h1>
 
-          <div className="row statisc">
-            <div className="col-1"></div>
-            <div
-              className="col-10 widgets"
-              style={{ justifyContent: "center" }}
-            >
-              <div className="left">
-                <Widget type="product" />
-                <Widget type="earning" />
-              </div>
-              <div className="right">
-                <Widget type="balance" />
-                <Widget type="order" />
-              </div>
-            </div>
-            <div className="col-1"></div>
-          </div>
+          
           <h2 style={{ textAlign: "center" }}>Danh sách các đơn mới nhất</h2>
           <div className="row">
             <div className="col-1"></div>

@@ -54,9 +54,9 @@ export default function ProductListPage() {
   const [selectedOption, setSelectedOption] = useState(null); // State để lưu giá trị đã chọn
   const GIAMGIARef = useRef(null);
   const TENSPRef = useRef(null);
-  const KICHCORef = useRef(null);
+  const SOLUONGRef = useRef(null);
   const GIABANRef = useRef(null);
-  const MOTASPRef = useRef(null);
+  const MOTARef = useRef(null);
   const queryParams = new URLSearchParams(window.location.search);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function ProductListPage() {
   }, []);
   const getproductApi = async () => {
     try {
-      const res = await customAxios.get("/Product/GetProductList/read.php");
+      const res = await customAxios.get("/NoiThat/GetProductList/read.php");
       dispatch(addListproduct(res?.data));
       setproductState(res?.data?.data);
     } catch (error) {
@@ -74,10 +74,10 @@ export default function ProductListPage() {
   console.log("product,,,,", productState);
 
   const options = [
-    { value: "1", label: "Áo đội tuyển" },
-    { value: "2", label: "Áo CLB" },
-    { value: "3", label: "Áo thể thao trơn" },
-    { value: "4", label: "Giày đá bóng" },
+    { value: 1, label: "Sofa" },
+    { value: 2, label: "Bàn ăn" },
+    { value: 3, label: "Giường ngủ" },
+    { value: 4, label: "Đèn trang trí" },
   ];
 
   const handleSelectChange = (selectedOption) => {
@@ -96,7 +96,7 @@ export default function ProductListPage() {
     try {
       setIsLoadingDetail(true); // Bắt đầu tải dữ liệu
       const detailData = await customAxios.get(
-        `/Product/GetProductList/web.php?MASP=${item}`
+        `/NoiThat/GetProductList/web.php?MASP=${item}`
       );
       setEditProductData(detailData?.data);
       setmodalEdit(true);
@@ -127,7 +127,7 @@ export default function ProductListPage() {
   const handleDelete = async (item) => {
     try {
       await customAxios.delete(
-        `/Product/GetProductList/web.php?MASP=${deleteCode}`
+        `/NoiThat/GetProductList/web.php?MASP=${deleteCode}`
       );
       getproductApi();
     } catch (error) {
@@ -152,7 +152,7 @@ export default function ProductListPage() {
     if (!filterproduct) {
       return productState;
     }
-    return productState?.filter((item) => item?.LOAISP === filterproduct);
+    return productState?.filter((item) => item?.TENLOAI === filterproduct);
   }
 
   var filterList = useMemo(getFilterList, [filterproduct, productState]);
@@ -169,14 +169,14 @@ export default function ProductListPage() {
     form.append("name", TENSPRef.current.value);
     form.append("discount", GIAMGIARef.current.value);
     form.append("type", selectedOption?.value);
-    form.append("description", MOTASPRef.current.value);
-    form.append("size", KICHCORef.current.value);
+    form.append("description", MOTARef.current.value);
+    form.append("count", SOLUONGRef.current.value);
     form.append("price", GIABANRef.current.value);
-    form.append("status", 0);
+    // form.append("status", 0);
     form.append("image", `${selectedImage}`);
 
     customAxios
-      .post("/Product/GetProductList/addProduct.php", form, {
+      .post("/NoiThat/GetProductList/addProduct.php", form, {
         headers: {
           "Content-Type": `multipart/form-data; boundary=${form._boundary}`,
         },
@@ -207,11 +207,11 @@ export default function ProductListPage() {
       MASP: item,
       TENSP: editProductData.TENSP, // Sử dụng giá trị ban đầu nếu không có giá trị mới
       LOAISP: editProductData.LOAISP,
-      MOTASP: editProductData.MOTASP,
+      MOTA: editProductData.MOTA,
       GIABAN: editProductData.GIABAN,
       IMAGE: editProductData.IMAGE,
       TRANGTHAI: editProductData.TRANGTHAI,
-      KICHCO: editProductData.KICHCO,
+      SOLUONG: editProductData.SOLUONG,
     };
 
     const config = {
@@ -222,7 +222,7 @@ export default function ProductListPage() {
 
     try {
       const response = await customAxios.put(
-        `/Product/GetProductList/web.php?MASP=${item}`,
+        `/NoiThat/GetProductList/web.php?MASP=${item}`,
         dataToSend,
         config
       );
@@ -365,11 +365,11 @@ export default function ProductListPage() {
                         type="text"
                         className="form-control"
                         id="LOAISP"
-                        value={editProductData.MOTASP}
+                        value={editProductData.MOTA}
                         onChange={(e) =>
                           setEditProductData({
                             ...editProductData,
-                            MOTASP: e.target.value,
+                            MOTA: e.target.value,
                           })
                         }
                       />
@@ -390,16 +390,31 @@ export default function ProductListPage() {
                       />
                     </Row>
                     <Row className="form-group">
-                      <label htmlFor="LOAISP">Kích cỡ:</label>
+                      <label htmlFor="LOAISP">Giảm giá:</label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        id="LOAISP"
+                        value={editProductData.DISCOUNT}
+                        onChange={(e) =>
+                          setEditProductData({
+                            ...editProductData,
+                            DISCOUNT: e.target.value,
+                          })
+                        }
+                      />
+                    </Row>
+                    <Row className="form-group">
+                      <label htmlFor="LOAISP">Số lượng:</label>
                       <input
                         type="text"
                         className="form-control"
                         id="LOAISP"
-                        value={editProductData.KICHCO}
+                        value={editProductData.SOLUONG}
                         onChange={(e) =>
                           setEditProductData({
                             ...editProductData,
-                            KICHCO: e.target.value,
+                            SOLUONG: e.target.value,
                           })
                         }
                       />
@@ -448,12 +463,16 @@ export default function ProductListPage() {
                   />
                 </Col>
                 <Col lg={12}>
-                  <label>Kích cỡ</label>
-                  <input ref={KICHCORef} type="text" className="form-control" />
+                  <label>Số lượng</label>
+                  <input
+                    ref={SOLUONGRef}
+                    type="number"
+                    className="form-control"
+                  />
                 </Col>
                 <Col lg={12}>
                   <label>Mô tả</label>
-                  <input ref={MOTASPRef} type="text" className="form-control" />
+                  <input ref={MOTARef} type="text" className="form-control" />
                 </Col>
                 <Col lg={12}>
                   <label>Giá bán</label>
@@ -537,10 +556,10 @@ export default function ProductListPage() {
                     Lọc theo danh mục
                   </option>
                   <option value="">Tất cả</option>
-                  <option value="1">Áo đội tuyển</option>
-                  <option value="2">Áo CLB</option>
-                  <option value="3">Áo thể thao trơn</option>
-                  <option value="4">Giày đá bóng</option>
+                  <option value="Sofa">Sofa</option>
+                  <option value="Bàn ăn">Bàn ăn</option>
+                  <option value="Giường ngủ">Giường ngủ</option>
+                  <option value="Đèn trang trí">Đèn trang trí</option>
                   {/* {productState?.map((item) => (
                     <option value={item?.LOAISP}>
                       <TypeProduct item={item?.LOAISP} />
@@ -571,8 +590,8 @@ export default function ProductListPage() {
                       <th scope="col">Hình ảnh</th>
                       <th scope="col">Mã sản phẩm</th>
                       <th scope="col">Tên sản phẩm</th>
-                      <th scope="col">Loại sản phẩm</th>
-                      <th scope="col">Kích cỡ</th>
+                      <th scope="col">Phân loại</th>
+                      <th scope="col">Số lượng</th>
                       <th scope="col">Giá</th>
                       {/* <th scope="col">Xem thêm</th> */}
                       <th scope="col">Thao tác</th>
@@ -591,11 +610,11 @@ export default function ProductListPage() {
                           </td>
                           <td>{item?.MASP}</td>
                           <td>{item?.TENSP}</td>
-                          {/* <td>{item?.LOAISP}</td> */}
-                          <td>
+                          <td>{item?.TENLOAI}</td>
+                          {/* <td>
                             <TypeProduct item={item?.LOAISP} />
-                          </td>
-                          <td>{item?.KICHCO}</td>
+                          </td> */}
+                          <td>{item?.SOLUONG}</td>
                           <td>{currencyFormat(item?.GIABAN)}</td>
                           <td>
                             <button
@@ -652,11 +671,11 @@ export default function ProductListPage() {
                           </td>
                           <td>{item?.MASP}</td>
                           <td>{item?.TENSP}</td>
-                          {/* <td>{item?.LOAISP}</td> */}
-                          <td>
+                          <td>{item?.TENLOAI}</td>
+                          {/* <td>
                             <TypeProduct item={item?.LOAISP} />
-                          </td>
-                          <td>{item?.KICHCO}</td>
+                          </td> */}
+                          <td>{item?.SOLUONG}</td>
                           <td>{currencyFormat(item?.GIABAN)}</td>
                           <td>
                             <button

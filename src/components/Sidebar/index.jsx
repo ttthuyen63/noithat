@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import SideBarItem from "./sidebar-item";
 
 import "./styles.css";
-import logo_sport from "../../image/logoSport.png";
+import logo from "../../image/logoFur.jpg";
 
 function SideBar({ menu }) {
   const location = useLocation();
@@ -27,7 +27,7 @@ function SideBar({ menu }) {
     <nav className="sidebar">
       <div className="sidebar-container">
         <div className="sidebar-logo-container">
-          <img src={logo_sport} alt="logo" className="img-logo" />
+          <img src={logo} alt="logo" className="img-logo" />
         </div>
 
         <div className="sidebar-container">

@@ -9,11 +9,11 @@ const sidebar_menu = [
     path: "/productList" || "/productList/:code",
     title: "Quản lý sản phẩm",
   },
-  {
-    id: 3,
-    path: "/userList",
-    title: "Quản lý người dùng",
-  },
+  // {
+  //   id: 3,
+  //   path: "/userList",
+  //   title: "Quản lý người dùng",
+  // },
   {
     id: 4,
     path: "/order",

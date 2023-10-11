@@ -6,7 +6,7 @@
   display: flex;
   justify-content: center;
   position: sticky;
-  background-image: linear-gradient(#015c92, #2d83b5, #89ccf6);
+  background-image: linear-gradient(#aa68d8, #0e4f74, #89ccf6);
 }
 .sidebar-logo-container {
   display: "flex";
@@ -45,12 +45,12 @@
   padding: 1.5em;
   padding-left: 2em;
   display: flex;
-  color: #ffffff;
+  color: black;
   list-style: none;
   text-decoration: none;
   align-items: center;
   justify-content: flex-start;
-  background-color: #004b77;
+  background-color: #ffffff;
   cursor: pointer;
 }
 .sidebar-item-icon {

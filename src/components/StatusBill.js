@@ -7,8 +7,8 @@ const StatusBill = (props) => {
     return (
       <div
         style={{
-          color: "black",
-          backgroundColor: "yellow",
+          // color: "black",
+          // backgroundColor: "yellow",
           border: "1px solid #ccc",
           textAlign: "center",
           padding: "5px 0px",
@@ -22,8 +22,8 @@ const StatusBill = (props) => {
     return (
       <div
         style={{
-          color: "white",
-          backgroundColor: "green",
+          // color: "white",
+          // backgroundColor: "green",
           border: "1px solid #ccc",
           textAlign: "center",
           padding: "5px 0px",
@@ -37,8 +37,8 @@ const StatusBill = (props) => {
     return (
       <div
         style={{
-          color: "white",
-          backgroundColor: "#015c92",
+          // color: "white",
+          // backgroundColor: "#015c92",
           border: "1px solid #ccc",
           textAlign: "center",
           padding: "5px 0px",
@@ -52,8 +52,8 @@ const StatusBill = (props) => {
     return (
       <div
         style={{
-          color: "white",
-          backgroundColor: "green",
+          // color: "white",
+          // backgroundColor: "green",
           border: "1px solid #ccc",
           textAlign: "center",
           padding: "5px 0px",
@@ -67,8 +67,8 @@ const StatusBill = (props) => {
     return (
       <div
         style={{
-          color: "white",
-          backgroundColor: "red",
+          // color: "white",
+          // backgroundColor: "red",
           border: "1px solid #ccc",
           textAlign: "center",
           padding: "5px 0px",

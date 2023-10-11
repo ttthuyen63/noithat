@@ -43,7 +43,7 @@ export default function OrderPage() {
   }, []);
   const getorderApi = async () => {
     try {
-      const response = await customAxios.get("/Product/GetBill/getAllBill.php");
+      const response = await customAxios.get("/NoiThat/GetBill/getAllBill.php");
       setorderState(response?.data?.result);
       console.log("orderState", orderState);
     } catch (error) {
@@ -54,7 +54,7 @@ export default function OrderPage() {
     try {
       setIsLoadingDetail(true);
       const response = await customAxios.get(
-        `/Product/GetBill/getBillByMahd.php?mahd=${id}`
+        `/NoiThat/GetBill/getBillByMahd.php?mahd=${id}`
       );
       setorderDetail(response?.data?.result);
       setmodelDetail(true);
@@ -83,9 +83,11 @@ export default function OrderPage() {
       formData.append("STATUS", "2");
 
       const response = await customAxios.post(
-        "/Product/GetBill/updateStatusBill.php",
+        "/NoiThat/GetBill/updateStatusBill.php",
         formData
       );
+      window.location.reload();
+
       setorderDetail();
       console.log(JSON.stringify(response.data));
     } catch (error) {
@@ -99,9 +101,10 @@ export default function OrderPage() {
       formData.append("STATUS", "4");
 
       const response = await customAxios.post(
-        "/Product/GetBill/updateStatusBill.php",
+        "/NoiThat/GetBill/updateStatusBill.php",
         formData
       );
+      window.location.reload();
       setorderDetail();
       console.log(JSON.stringify(response.data));
     } catch (error) {
@@ -242,7 +245,7 @@ export default function OrderPage() {
           ) : (
             <>
               <ModalHeader toggle={() => setmodelDetail(!modelDetail)}>
-                Chi tiết đơn hàng ĐH{orderDetail[0]?.MAHD}
+                Chi tiết đơn hàng HĐ{orderDetail[0]?.MAHD}
               </ModalHeader>
               <ModalBody>
                 <form>
@@ -282,8 +285,7 @@ export default function OrderPage() {
                             <th scope="col">Hình ảnh</th>
                             <th scope="col">Mã sản phẩm</th>
                             <th scope="col">Tên sản phẩm</th>
-                            <th scope="col">Loại sản phẩm</th>
-                            <th scope="col">Kích cỡ</th>
+                            <th scope="col">Phân loại</th>
                             <th scope="col">Giá</th>
                             {/* <th scope="col">Xem thêm</th> */}
                             <th scope="col">Số lượng</th>
@@ -303,7 +305,6 @@ export default function OrderPage() {
                               <td>
                                 <Typeproduct item={item?.LOAISP} />
                               </td>
-                              <td>{item?.KICHCO}</td>
                               <td>{currencyFormat(item?.GIABAN)}</td>
                               <td>{item?.SOLUONG}</td>
                             </tr>
@@ -454,7 +455,7 @@ export default function OrderPage() {
                                 type="button"
                                 className="btn btn-xs"
                                 // data-toggle="modal"
-                                disabled
+                                // disabled
                                 // data-target="#delModal"
                                 onClick={() => handleRefuseBill(item?.MAHD)}
                               >
@@ -574,7 +575,7 @@ export default function OrderPage() {
                                 type="button"
                                 className="btn btn-xs"
                                 // data-toggle="modal"
-                                disabled
+                                // disabled
                                 // data-target="#delModal"
                                 onClick={() => handleRefuseBill(item?.MAHD)}
                               >
