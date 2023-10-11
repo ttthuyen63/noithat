@@ -97,12 +97,50 @@ export default function HomePage() {
               style={{ width: "200px" }}
             /> */}
           </div>
-          <h1 className="" style={{ textAlign: "center" }}>
+          {/* <h1 className="" style={{ textAlign: "center" }}>
             Thống kê
-            {/* Thay bằng tên muốn đặt */}
-          </h1>
+          </h1> */}
 
-          
+          <h2 style={{ textAlign: "center" }}>Danh sách sản phẩm mới nhất</h2>
+          <div className="row">
+            <div className="col-1"></div>
+            <div className="col-10">
+              <table className="table recently-violated table-new-order">
+                <thead>
+                  <tr>
+                    <th scope="col">Hình ảnh</th>
+                    <th scope="col">Mã sản phẩm</th>
+                    <th scope="col">Tên sản phẩm</th>
+                    <th scope="col">Phân loại</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Giá</th>
+                  </tr>
+                </thead>
+                {/* ----------------------------------------- */}
+                <tbody id="myTable">
+                  {latestProduct?.map((item, index) => (
+                    <tr>
+                      <td>
+                        <img
+                          src={item?.IMAGE}
+                          style={{ height: "50px", width: "50px" }}
+                        />
+                      </td>
+                      <td>{item?.MASP}</td>
+                      <td>{item?.TENSP}</td>
+                      <td>{item?.TENLOAI}</td>
+                      {/* <td>
+                            <TypeProduct item={item?.LOAISP} />
+                          </td> */}
+                      <td>{item?.SOLUONG}</td>
+                      <td>{currencyFormat(item?.GIABAN)}</td>
+                    </tr>
+                  ))}
+                  <div></div>
+                </tbody>
+              </table>
+            </div>
+          </div>
           <h2 style={{ textAlign: "center" }}>Danh sách các đơn mới nhất</h2>
           <div className="row">
             <div className="col-1"></div>
