@@ -85,7 +85,7 @@ export default function HomePage() {
                   navigate("/");
                 }}
               >
-                Thoát
+                Đăng xuất
               </Button>
             </h5>
           </div>
